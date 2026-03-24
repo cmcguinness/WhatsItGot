@@ -4,6 +4,8 @@ A Chrome extension that detects what technologies a website is built with — fr
 
 Powered by the [Wappalyzer](https://github.com/dochne/wappalyzer) open-source fingerprint database (3,900+ technologies) with a supplemental hand-curated description database.
 
+![What's It Got in action](example.png)
+
 ## Features
 
 - **Comprehensive detection** across CMS, frameworks, CDNs, analytics, payment processors, programming languages, web servers, and 100+ other categories
