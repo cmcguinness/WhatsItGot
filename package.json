@@ -1,0 +1,13 @@
+{
+  "name": "whatsitgot-extension",
+  "version": "1.3.0",
+  "description": "Chrome extension that detects what technologies a website is built with",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "fetch-fingerprints": "node scripts/fetch-fingerprints.js",
+    "build": "npm run fetch-fingerprints"
+  }
+}

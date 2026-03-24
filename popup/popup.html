@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="logo">What's It Got</div>
+      <div id="url-display"></div>
+    </header>
+    <main id="results">
+      <div id="loading">Analyzing page...</div>
+      <div id="empty" hidden>No technologies detected</div>
+      <div id="tech-list"></div>
+    </main>
+    <footer>
+      <button id="rescan-btn" title="Re-scan this page">Re-scan</button>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
