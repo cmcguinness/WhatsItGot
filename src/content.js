@@ -97,7 +97,10 @@
                 if (checks && checks.attributes) {
                   var attrKeys = Object.keys(checks.attributes);
                   for (var a = 0; a < attrKeys.length; a++) {
-                    domInfo.attributes[attrKeys[a]] = el.getAttribute(attrKeys[a]) || '';
+                    var attrVal = el.getAttribute(attrKeys[a]);
+                    if (attrVal !== null) {
+                      domInfo.attributes[attrKeys[a]] = attrVal;
+                    }
                   }
                 }
                 evidence.dom[sel] = domInfo;

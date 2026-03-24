@@ -1,6 +1,6 @@
 /**
  * Generate simple extension icons as PNG files using Canvas API (Node 18+ compatible).
- * Creates a blue "B" lettermark on a dark background.
+ * Creates a blue "W" lettermark on a dark background.
  */
 const fs = require('fs');
 const path = require('path');
@@ -118,51 +118,43 @@ function drawIcon(size) {
     }
   }
 
-  // Draw "B" letter — using simple rectangle-based approach
-  const margin = Math.floor(size * 0.22);
-  const strokeW = Math.max(2, Math.floor(size * 0.14));
-  const midY = Math.floor(size / 2);
+  // Draw "W" letter — four diagonal strokes forming a W shape
+  const margin = Math.floor(size * 0.18);
+  const strokeW = Math.max(2, Math.floor(size * 0.11));
+  const top = margin;
+  const bottom = size - margin;
+  const left = margin;
+  const right = size - margin;
+  const midX = Math.floor(size / 2);
+  const midY = Math.floor(size * 0.65); // bottom of the two V valleys
+  const height = bottom - top;
 
-  // Vertical bar of B
-  for (let y = margin; y < size - margin; y++) {
-    for (let x = margin; x < margin + strokeW; x++) {
-      setPixel(pixels, size, x, y, fgR, fgG, fgB);
-    }
-  }
+  // W has 5 key x-points at top: left, quarter-left, center, quarter-right, right
+  // and 2 valley points at midY: between left-center, between center-right
+  const valleyLeft = Math.floor(left + (midX - left) / 2);
+  const valleyRight = Math.floor(midX + (right - midX) / 2);
 
-  // Top horizontal
-  for (let y = margin; y < margin + strokeW; y++) {
-    for (let x = margin; x < size - margin - Math.floor(strokeW * 0.3); x++) {
-      setPixel(pixels, size, x, y, fgR, fgG, fgB);
-    }
-  }
+  // Draw W by tracing each column and checking if it falls on a stroke
+  for (let y = top; y < bottom; y++) {
+    const t = (y - top) / (bottom - top); // 0 at top, 1 at bottom
 
-  // Middle horizontal
-  for (let y = midY - Math.floor(strokeW / 2); y < midY + Math.ceil(strokeW / 2); y++) {
-    for (let x = margin; x < size - margin - Math.floor(strokeW * 0.3); x++) {
-      setPixel(pixels, size, x, y, fgR, fgG, fgB);
-    }
-  }
+    // Left leg: goes from (left, top) to (valleyLeft, bottom)
+    const leg1X = left + t * (valleyLeft - left);
+    // Inner-left leg: goes from (midX, top) to (valleyLeft, bottom)
+    const leg2X = midX + t * (valleyLeft - midX);
+    // Inner-right leg: goes from (midX, top) to (valleyRight, bottom)
+    const leg3X = midX + t * (valleyRight - midX);
+    // Right leg: goes from (right, top) to (valleyRight, bottom)
+    const leg4X = right + t * (valleyRight - right);
 
-  // Bottom horizontal
-  for (let y = size - margin - strokeW; y < size - margin; y++) {
-    for (let x = margin; x < size - margin - Math.floor(strokeW * 0.3); x++) {
-      setPixel(pixels, size, x, y, fgR, fgG, fgB);
-    }
-  }
-
-  // Right side top bump
-  const rightX = size - margin - strokeW;
-  for (let y = margin; y < midY; y++) {
-    for (let x = rightX; x < rightX + strokeW; x++) {
-      setPixel(pixels, size, x, y, fgR, fgG, fgB);
-    }
-  }
-
-  // Right side bottom bump
-  for (let y = midY; y < size - margin; y++) {
-    for (let x = rightX; x < rightX + strokeW; x++) {
-      setPixel(pixels, size, x, y, fgR, fgG, fgB);
+    const halfStroke = strokeW / 2;
+    for (let x = left - strokeW; x < right + strokeW; x++) {
+      if (Math.abs(x - leg1X) < halfStroke ||
+          Math.abs(x - leg2X) < halfStroke ||
+          Math.abs(x - leg3X) < halfStroke ||
+          Math.abs(x - leg4X) < halfStroke) {
+        setPixel(pixels, size, x, y, fgR, fgG, fgB);
+      }
     }
   }
 
